@@ -35,7 +35,7 @@ $(document).ready(function () {
     slotUpdate();
 
     // update past, present, future every second
-    setInterval(slotUpdate, 1000);
+    var timerInterval = setInterval(slotUpdate, 1000);
 
     function slotUpdate() {
 
@@ -52,10 +52,13 @@ $(document).ready(function () {
                 }
                 // all rows with id < hour to past
                 else if (i < hour){
+                    $("#" + i).removeClass("present");
                     $("#" + i).addClass("past");
+
                 }
                 // all rows with id = hour to present
                 else {
+                    $("#" + i).removeClass("future");
                     $("#" + i).addClass("present");
                 }
             }
