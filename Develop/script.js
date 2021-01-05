@@ -24,7 +24,43 @@ $(document).ready(function () {
     // empty array for storing event text
     var eventArray = ["","","","","","","","",""];
 
-    // localStorage.setItem("events", JSON.stringify(eventArray));
+
+    // put formatted date at top of page
+    $("#currentDay").text(moment().format("dddd, MMMM Do YYYY"));
+    
+    // initializes realHour to null so it is global and can be checked against previous values in the slotUpdate function
+    var realHour = null;
+
+    // run slotUpdate once as part of the initialization so the program doesn't wait 1 second for the timerInterval to start
+    slotUpdate();
+
+    // update past, present, future every second
+    setInterval(slotUpdate, 1000);
+
+    function slotUpdate() {
+
+        // checks if the hour has changed
+        if (realHour !== moment().hour()){
+            // if changed sets realHour to the current hour
+            realHour = moment().hour();
+            hour = realHour - 9;
+            // loops through rows
+            for(i = 0; i < 9; i++){
+                // set all rows with id > hour to future
+                if (i > hour){
+                    $("#" + i).addClass("future");
+                }
+                // all rows with id < hour to past
+                else if (i < hour){
+                    $("#" + i).addClass("past");
+                }
+                // all rows with id = hour to present
+                else {
+                    $("#" + i).addClass("present");
+                }
+            }
+        }
+    }
 
     // if something in local storage load from local storage
     if (localStorage.getItem("events") !== null) {
@@ -35,8 +71,6 @@ $(document).ready(function () {
             $("#" + i).find(".description").text(eventArray[i]);
         }
     }
-
-
 
     // when button is clicked
     $(".saveBtn").on("click", function(event) {
@@ -50,8 +84,6 @@ $(document).ready(function () {
 
         // save eventArray in local storage
         localStorage.setItem("events", JSON.stringify(eventArray));
-
-
     });
 
 });
