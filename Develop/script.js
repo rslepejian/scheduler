@@ -38,11 +38,20 @@ $(document).ready(function () {
 
 
 
-    // 
-
-
+    // when button is clicked
     $(".saveBtn").on("click", function(event) {
-        
+        event.preventDefault();
+
+        // go to its sibling element with class of description and copy the text content to a temporary variable
+        var tempText = $(this).siblings(".description").val();
+
+        // save the text in that sibling to eventArray in the index equal to the id of the parent element
+        eventArray[$(this).parent().attr("id")] = tempText;
+
+        // save eventArray in local storage
+        localStorage.setItem("events", JSON.stringify(eventArray));
+
+
     });
 
 });
